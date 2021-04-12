@@ -228,7 +228,7 @@ def predict(data):
 
         for i in range(len(labels)):
             print(labels[i]+': '+str(round(probs[i]*100,2))+'%',end ="  ")
-        print()
+        print("Data")
         print(data)
         print("**********************")
 
