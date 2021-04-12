@@ -204,6 +204,7 @@ def predict(data):
         return data
     elif prediction == 1:
         print("Phát hiện tấn công: "+ str(round(prob[0][1]*100,2)) + "%")
+
         data['MALICIOUS'] = prob[0][1]
         model = load_model(category_model_path)
         prob = model(xTest).numpy()
@@ -228,6 +229,8 @@ def predict(data):
         for i in range(len(labels)):
             print(labels[i]+': '+str(round(probs[i]*100,2))+'%',end ="  ")
         print()
+        print(data)
+        print("**********************")
 
 
 
