@@ -6,7 +6,6 @@ import ipaddress
 import numpy as np
 from .flow import Flow
 from pickle import load
-from collections import deque
 from collections import defaultdict
 from scapy.sessions import DefaultSession
 from pathlib import Path, PureWindowsPath
@@ -29,12 +28,11 @@ class FlowSession(DefaultSession):
 
         if self.output_mode == "flow":
             output = open(self.output_file, "w")
-            #self.csv_writer = csv.writer(output)
+            self.csv_writer = csv.writer(output)
 
         self.packets_count = 0
 
         self.clumped_flows_per_label = defaultdict(list)
-        self.remained_data = deque()
 
         super(FlowSession, self).__init__(*args, **kwargs)
 
@@ -125,7 +123,6 @@ class FlowSession(DefaultSession):
                 data = flow.get_data()
                 data = predict(data)
 
-
                 # POST Request to Model API
                 # if self.url_model:
                 #     payload = {
@@ -150,28 +147,17 @@ class FlowSession(DefaultSession):
                 #         result_print = "Benign"
                 #     else:
                 #         result_print = "Malicious"
-                try:
-                    output = open(self.output_file, "a+")
-                    csv_writer = csv.writer(output)
-                    if self.csv_line == 0:
-                        print("Header")
-                        csv_writer.writerow(data.keys())
-                    while self.remained_data:
-                        lefted = self.remained_data.popleft()
-                        print(lefted)
-                        csv_writer.writerow(lefted.values())
-                        self.csv_line += 1
-
-                    # if self.csv_line == 0:
-                    #     csv_writer.writerow(data.keys())
-                    csv.writer(output).writerow(data.values())
-                    self.csv_line += 1
-                except IOError as e:
-                    print(e)
-                    self.remained_data.append(data)
 
 
+
+                if self.csv_line == 0:
+                    self.csv_writer.writerow(data.keys())
+
+                self.csv_writer.writerow(data.values())
+                self.csv_line += 1
                 #print("CIC: " + str(data))
+
+
 
                 del self.flows[k]
         # print("Garbage Collection Finished. Flows = {}".format(len(self.flows)))
