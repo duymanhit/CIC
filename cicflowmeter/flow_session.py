@@ -201,7 +201,7 @@ def predict(data):
     category_model_path = PureWindowsPath('model/output/ML_category_classifier_model')
     category_model_path = Path(category_model_path)
 
-    scaler_path = PureWindowsPath('model/scaler.pkl')
+    scaler_path = PureWindowsPath('model/output/scaler.pkl')
     scaler_path = Path(scaler_path)
     scaler = load(open(scaler_path, 'rb'))
     xTest = scaler.transform(numpy.array(xTest).reshape(1, -1))

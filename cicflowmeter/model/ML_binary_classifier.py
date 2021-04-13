@@ -30,7 +30,7 @@ else:
     sys.exit('Invalid Operation')
 
 features_file = sys.argv[2]
-run_no = sys.argv[3]
+run_no = ""
 print('running script run no: ' + sys.argv[3])
 
 max_val = 99999
@@ -120,6 +120,7 @@ transformed_x = scaler.fit_transform(original_x)
 new_x = pd.DataFrame(transformed_x)
 print(original_x.shape)
 print(len(temp_y))
+print(transformed_x[0:100])
 # @TODO save scaler
 dump(scaler, open('output/scaler.pkl', 'wb'))
 
